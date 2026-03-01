@@ -12,16 +12,16 @@ router.post('/sendConnection/:status/:toUserId',userAuth,async(req,res)=>{
     try {
         
     const fromUser=req.user
-    
+
     const toUser=await User.findById(req.params.toUserId);   //find the user to whom connection request is to be sent
     if(!toUser){
         return res.status(404).send({message:"User not found"})
     }
     const status=req.params.status;                          //interested,ignored
        
-    if(fromUser._id.equals(toUser._id)){
-            return res.status(400).send({message:"You cannot send connection request to yourself"})
-        }
+    // if(fromUser._id.equals(toUser._id)){
+    //         return res.status(400).send({message:"You cannot send connection request to yourself"})
+    //     }
 
     const allowedStatus=["interested","ignored"]
     if(!allowedStatus.includes(status)){
