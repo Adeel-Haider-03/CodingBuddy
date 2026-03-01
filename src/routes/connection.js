@@ -6,6 +6,8 @@ const User=require('../models/user');
 
 
 router.post('/sendConnection/:status/:toUserId',userAuth,async(req,res)=>{
+
+
     //we get user because we have attach user to request in middleware
     try {
         
@@ -13,6 +15,17 @@ router.post('/sendConnection/:status/:toUserId',userAuth,async(req,res)=>{
     const toUser=await findOne(req.params.toUserId); //find the user to whom connection request is to be sent
     const status=req.params.status;                 //interested,ignored,accepted,rejected
 
+    if(status=='accepted'){
+    //create condition if connection request already exists between two users
+    const existingConnectionRequest=await ConnectionRequest.findOne({
+        from:fromUser._id,
+        to:toUser._id
+    })
+
+        if(existingConnectionRequest){
+            return res.send({message:"Connection request already exists"})
+        }
+    }
     //create a connection request
     const connectionRequest=new ConnectionRequest({
         from:fromUser._id,
