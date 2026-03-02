@@ -59,4 +59,32 @@ router.post('/sendConnection/:status/:toUserId',userAuth,async(req,res)=>{
 })
 
 
+router.post('/respondConnection/:requestId',userAuth,async(req,res)=>{
+
+    try {
+        const loggedInUser=req.user;
+        // const status=req.params.status;          
+        const requestId=req.params.requestId;
+
+        const connectionRequest=await ConnectionRequest.findById(requestId);
+
+        if(loggedInUser._id.equals(connectionRequest.toUserId)){
+            if(connectionRequest.status==="interested"){
+            res.send({message:`you have friend request from ${connectionRequest.fromUserId}, you can respond to it`})
+        }
+    }
+        else{
+            res.status(500).send({message:"You have no request yet"})
+        }
+
+    } catch (error) {
+        
+    }
+})
+
+
+
+
+
+
 module.exports=router;
