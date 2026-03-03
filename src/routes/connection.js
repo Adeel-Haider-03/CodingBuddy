@@ -59,26 +59,40 @@ router.post('/sendConnection/:status/:toUserId',userAuth,async(req,res)=>{
 })
 
 
-router.post('/respondConnection/:requestId',userAuth,async(req,res)=>{
+router.post('/respondConnection/:status/:requestId',userAuth,async(req,res)=>{
 
     try {
+
+        
         const loggedInUser=req.user;
-        // const status=req.params.status;          
+        const status=req.params.status;          
         const requestId=req.params.requestId;
 
-        const connectionRequest=await ConnectionRequest.findById(requestId);
+        const allowedStatus=["accepted","rejected"]
+        if(!allowedStatus.includes(status)){
+            return res.status(400).send({message:"Invalid status type"})
+        }
 
-        if(loggedInUser._id.equals(connectionRequest.toUserId)){
-            if(connectionRequest.status==="interested"){
-            res.send({message:`you have friend request from ${connectionRequest.fromUserId}, you can respond to it`})
+        const connectionRequest=await ConnectionRequest.findOne(
+            {_id:requestId,
+            toUserId:loggedInUser._id,
+            status:"interested"
+            }
+        )
+
+          console.log(connectionRequest)
+
+        if(!connectionRequest){
+            return res.status(404).send({message:"No Connection request not found"})
         }
-    }
-        else{
-            res.status(500).send({message:"You have no request yet"})
-        }
+    
+            connectionRequest.status=status;
+            await connectionRequest.save();
+            res.send({message:"Connection request responded successfully",connectionRequest})
+      
 
     } catch (error) {
-        
+        res.send({message:error.message})
     }
 })
 
