@@ -1,8 +1,8 @@
 const express=require('express')
 const connectionRouter=express.Router();
 const {userAuth}=require('../middlewares/userAuth');
-const ConnectionRequest=require('../models/ConnectionRequest');
-const User=require('../models/user');
+const ConnectionRequest=require('../models/connectionRequest')
+const User=require('../models/user')
 
 
 connectionRouter.post('/sendConnection/:status/:toUserId',userAuth,async(req,res)=>{
@@ -35,7 +35,7 @@ connectionRouter.post('/sendConnection/:status/:toUserId',userAuth,async(req,res
         ]
     })
 
-    if(!checkConnection){
+    if(checkConnection){
         return res.status(400).send({message:"Connection already exist"})
         }
 
@@ -45,7 +45,8 @@ connectionRouter.post('/sendConnection/:status/:toUserId',userAuth,async(req,res
         toUserId:toUser._id,
         status:status
     })
-
+    // console.log(connectionRequest);
+    
     
       await connectionRequest.save();
     res.send({message:"Connection request sent successfully",connectionRequest})
@@ -80,7 +81,6 @@ connectionRouter.post('/respondConnection/:status/:requestId',userAuth,async(req
             }
         )
 
-          console.log(connectionRequest)
 
         if(!connectionRequest){
             return res.status(404).send({message:"No Connection request not found"})
