@@ -1,12 +1,12 @@
 const express = require('express');
-const router=express.Router()
+const authRouter=express.Router()
 const { validateSignupData,validateLoginData } = require('../utils/helper');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
 
 
-router.post('/signup', async (req, res) => {
+authRouter.post('/signup', async (req, res) => {
     
     try {
         //user validation
@@ -35,7 +35,7 @@ router.post('/signup', async (req, res) => {
     }
 })
 
-router.post('/login', async (req, res) => {
+authRouter.post('/login', async (req, res) => {
     try {
         const isvalidlogin=validateLoginData(req.body)
 
@@ -69,7 +69,7 @@ router.post('/login', async (req, res) => {
 })
 
 
-router.post('/logout',async(req,res)=>{
+authRouter.post('/logout',async(req,res)=>{
     res.cookie('token', null, {expires:new Date(Date.now()),httpOnly:true})
     res.send('logout successful')
 })

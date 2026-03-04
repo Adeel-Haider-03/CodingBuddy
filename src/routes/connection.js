@@ -1,11 +1,11 @@
 const express=require('express')
-const router=express.Router();
+const connectionRouter=express.Router();
 const {userAuth}=require('../middlewares/userAuth');
 const ConnectionRequest=require('../models/ConnectionRequest');
 const User=require('../models/user');
 
 
-router.post('/sendConnection/:status/:toUserId',userAuth,async(req,res)=>{
+connectionRouter.post('/sendConnection/:status/:toUserId',userAuth,async(req,res)=>{
 
 
     //we get user because we have attach user to request in middleware
@@ -59,7 +59,7 @@ router.post('/sendConnection/:status/:toUserId',userAuth,async(req,res)=>{
 })
 
 
-router.post('/respondConnection/:status/:requestId',userAuth,async(req,res)=>{
+connectionRouter.post('/respondConnection/:status/:requestId',userAuth,async(req,res)=>{
 
     try {
 

@@ -9,8 +9,8 @@ app.use(express.json());
 
 app.use(cookieParser())
 
-const profileRouter=require('./routes/profile')
 const authRouter=require('./routes/auth')
+const profileRouter=require('./routes/profile')
 const connectionRouter=require('./routes/connection')
 
 app.use('/',authRouter)

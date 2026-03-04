@@ -1,11 +1,11 @@
 const express=require('express')
-const router=express.Router();
+const profileRouter=express.Router();
 const {userAuth}=require('../middlewares/userAuth');
 const {validateUpdate}=require('../utils/helper')
 const User=require('../models/user')
 const bcrypt=require('bcrypt')
 
-router.get('/profile/view',userAuth,async(req,res)=>{
+profileRouter.get('/profile/view',userAuth,async(req,res)=>{
     try {
         //we get user from req attached in middleware
         const user=req.user
@@ -16,7 +16,7 @@ router.get('/profile/view',userAuth,async(req,res)=>{
     }
 })
 
-router.patch('/profile/update',userAuth,async(req,res)=>{
+profileRouter.patch('/profile/update',userAuth,async(req,res)=>{
     try {
 
         if(!validateUpdate(req.body)){
@@ -43,7 +43,7 @@ router.patch('/profile/update',userAuth,async(req,res)=>{
     }
 })
 
-router.delete('/deleteUser',async(req,res)=>{
+profileRouter.delete('/deleteUser',async(req,res)=>{
     try {
       //  await User.deleteOne({emailId:"khan@gmail.com"}) //Deletes the first document that matches conditions from the collection
         
@@ -54,7 +54,7 @@ router.delete('/deleteUser',async(req,res)=>{
     }
 })
 
-router.patch('/profile/changePassword',userAuth,async(req,res)=>{
+profileRouter.patch('/profile/changePassword',userAuth,async(req,res)=>{
     try {
         const user=req.user
         const {password,newPassword,confirmPassword}=req.body
