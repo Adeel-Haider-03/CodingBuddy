@@ -73,14 +73,14 @@ connectionRouter.post('/respondConnection/:status/:requestId',userAuth,async(req
         if(!allowedStatus.includes(status)){
             return res.status(400).send({message:"Invalid status type"})
         }
-
+        
         const connectionRequest=await ConnectionRequest.findOne(
-            {_id:requestId,
+            {fromUserId:requestId,
             toUserId:loggedInUser._id,
             status:"interested"
             }
         )
-
+        
 
         if(!connectionRequest){
             return res.status(404).send({message:"No Connection request not found"})
