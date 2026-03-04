@@ -81,4 +81,4 @@ router.patch('/profile/changePassword',userAuth,async(req,res)=>{
     }
 })
 
-module.exports=router;
+module.exports=profileRouter;

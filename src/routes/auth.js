@@ -74,4 +74,4 @@ router.post('/logout',async(req,res)=>{
     res.send('logout successful')
 })
 
-module.exports=router;
+module.exports=authRouter;

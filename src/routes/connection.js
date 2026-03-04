@@ -101,4 +101,4 @@ router.post('/respondConnection/:status/:requestId',userAuth,async(req,res)=>{
 
 
 
-module.exports=router;
+module.exports=connectionRouter;

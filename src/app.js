@@ -9,13 +9,13 @@ app.use(express.json());
 
 app.use(cookieParser())
 
-const profile=require('./routes/profile')
-const auth=require('./routes/auth')
-const connection=require('./routes/connection')
+const profileRouter=require('./routes/profile')
+const authRouter=require('./routes/auth')
+const connectionRouter=require('./routes/connection')
 
-app.use('/',auth)
-app.use('/',profile)
-app.use('/',connection)
+app.use('/',authRouter)
+app.use('/',profileRouter)
+app.use('/',connectionRouter)
 
 
 // app.get('/getUser',async(req,res)=>{
