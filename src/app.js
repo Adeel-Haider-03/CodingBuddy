@@ -13,8 +13,11 @@ const authRouter=require('./routes/auth')
 const profileRouter=require('./routes/profile')
 const connectionRouter=require('./routes/connection')
 const userRouter=require('./routes/userRequests')
+const feedRouter=require('./routes/feed')
+
 
 app.use('/',authRouter)
+app.use('/',feedRouter)
 app.use('/',profileRouter)
 app.use('/',connectionRouter)
 app.use('/',userRouter)
