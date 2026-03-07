@@ -8,6 +8,14 @@ feedRouter.get("/feed", userAuth, async (req, res) => {
   try {
     const SAFE_DATA = ["firstName", "lastName", "emailId", "skills", "age"];
     const loggedInUser = req.user;
+
+    //page no and limit extraction for pagination
+    //feed?page=1&limit=10
+    const page = req.query.page || 1; //default page is 1 if not provided in query
+    let limit = req.query.limit || 10; //default limit is 10 if not provided in query
+    limit = limit > 50 ? 50 : limit; //capping limit at 50 to prevent too many users being returned in feed which can cause performance issues
+    const skip = (page - 1) * limit; //calculating skip value for pagination
+
     const connections = await ConnectionRequest.find({
       $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
     }).select("fromUserId toUserId"); //select do select only necessary fields given
@@ -26,7 +34,10 @@ feedRouter.get("/feed", userAuth, async (req, res) => {
 
         { _id: { $ne: loggedInUser._id } }, //also excluding logged in user from feed using $ne (not equal) operator
       ],
-    }).select(SAFE_DATA); //selecting only safe data to send in feed
+    })
+      .select(SAFE_DATA)
+      .skip(skip)
+      .limit(limit); //selecting only safe data fields and applying pagination using skip and limit
 
     res.send(feed);
   } catch (error) {
